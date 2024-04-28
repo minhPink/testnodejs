@@ -20,7 +20,28 @@ block main
                     +button-status(filterStatus)
                 .col-6 
                     +search(keyword)
-            
+
+    
+    .card.mb-3
+        .card-header Sắp xếp 
+        .card-body 
+            .row 
+                .col-4 
+                    div(sort)
+                        select(
+                            name="sort"
+                            class="form-control"
+                            sort-select
+                            ) 
+                            option(disabled selected) -- Chon hanh dong --
+                            option(value="position-desc") Vị trí giảm dần 
+                            option(value="position-asc") Vị trí tăng dần
+                            option(value="price-desc") Gía giảm dần
+                            option(value="price-asc") Gía tăng dần
+                            option(value="title-asc") Tiêu đề A-Z
+                            option(value="title-desc") Tiêu đề Z-A
+
+
     .card.mb-3 
         .card-header Danh Sach 
             .card-body

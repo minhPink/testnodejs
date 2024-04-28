@@ -33,7 +33,19 @@ module.exports.index = async (req, res) => {
     
     
     //pagination
-    const products = await Product.find(find).sort({ position: "desc"}).limit(objectPagination.limitProduct).skip(objectPagination.indexProduct);
+
+    //sort-select
+    let sort = {};
+
+    if(req.query.sortKey && req.query.sortValue){
+        sort[req.query.sortKey] = req.query.sortValue
+    } 
+    else{
+        sort.position = "desc"
+    }
+    
+    //sort-select
+    const products = await Product.find(find).sort(sort).limit(objectPagination.limitProduct).skip(objectPagination.indexProduct);
 
 
 
@@ -59,10 +71,9 @@ module.exports.changeStatus = async (req, res) => {
 
 // [PATH] admin/products/change/multi
 module.exports.changeMulti = async (req, res) => {
-    const type = req.body.type;
+    try {
+        const type = req.body.type;
     const ids = req.body.ids.split(", ");
-    console.log(type);
-    console.log(ids);
     switch (type) {
         case "active":
             await Product.updateMany({ _id: { $in: ids } },{ status: "active" });
@@ -93,6 +104,9 @@ module.exports.changeMulti = async (req, res) => {
             break;
     }
     res.redirect("back");
+    } catch (error) {
+        res.redirect(`${configSystem.prefixAdmin}/products`);
+    } 
 }
 
 // [DELTE] admin/products/delete/:id

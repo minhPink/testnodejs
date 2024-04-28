@@ -165,6 +165,26 @@ if(chooseImg){
 // End preview img before uploads
 
 
+// Form Sort
+const formSort = document.querySelector("[sort]");
+if(formSort){
+    let url = new URL(window.location.href);
+    const sortSelect = document.querySelector("[sort-select]");
+
+    sortSelect.addEventListener("change", (e) => {
+        console.log(e);
+        const valueOption = e.target.value;
+        const [sortKey, sortValue] = valueOption.split("-");
+        
+        url.searchParams.set("sortKey", sortKey);
+        url.searchParams.set("sortValue", sortValue);
+
+        window.location.href = url;
+
+    });
+}
+// End Form Sort
+
 
 
 
