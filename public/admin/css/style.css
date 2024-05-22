@@ -17,7 +17,7 @@
 
 /* Body */
 .body .sider {
-    width: 150px;
+    width: 175px;
     background: #323232;
     color: #fff;
     height: calc(100vh - 56px);
@@ -29,7 +29,7 @@
 .body .main {
     margin: 15px;
     position: relative;
-    left: 150px;
+    left: 175px;
     width: calc(100% - 100px);
 }
 /* End Body */

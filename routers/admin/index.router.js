@@ -8,6 +8,8 @@ const systemConfig = require("../../config/system");
 
 const roleRouter = require("./roles.router");
 
+const accountRouter = require("./account.route");
+
 
 
 
@@ -21,4 +23,6 @@ module.exports = (app) => {
     app.use(PATH_ADMIN + "/products-category", categoryRoutes);
 
     app.use(PATH_ADMIN + "/roles", roleRouter);
+
+    app.use(PATH_ADMIN + "/accounts", accountRouter);
 }

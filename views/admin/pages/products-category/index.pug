@@ -5,7 +5,7 @@ block main
     h1 Danh muc san pham
 
     .card.mb-3 
-        .card-header Danh sach 
+        .card-header
             .card-body 
                 .row 
                     .col-8
@@ -30,9 +30,8 @@ block main
                             th Trang thai 
                             th Hanh dong
                     tbody
+                        +table-tree(records)
 
-    //- nav
-    //-     +navigation(objectPagination)
     form(  
         action=""
         form-change-status 

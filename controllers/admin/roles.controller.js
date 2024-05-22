@@ -29,3 +29,29 @@ module.exports.createPost = async (req, res) => {
 
     res.redirect(`${configSystem.prefixAdmin}/roles`);
 }
+
+// [GET] admin/roles/permissions
+module.exports.permissions = async (req, res) => {
+    const find = {
+        deleted: false
+    }
+    const records = await Role.find(find);
+
+    res.render("admin/pages/roles/permissions", {
+        pageTitle: "Phan quyen",
+        records: records
+    });
+}
+
+// [GET] admin/roles/permissions
+module.exports.permissionsPatch = async (req, res) => {
+
+    const permissions = JSON.parse(req.body.permissions);
+
+    permissions.forEach(async item => {
+        
+        await Role.updateOne({ _id: item.id} , {permissions: item.permissions});
+    });
+
+    res.redirect("back");
+}

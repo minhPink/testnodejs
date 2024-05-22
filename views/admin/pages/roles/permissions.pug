@@ -1,0 +1,65 @@
+extends ../../layouts/default.pug 
+
+block main 
+    h1 Phan quyen 
+
+    div(data-records=records)
+
+    div
+        button(
+            type="submit"
+            class="btn btn-primary mb-3"
+            button-submit
+        ) Cap nhat 
+
+    table(
+        class="table table-hover table-sm"
+        table-permissons
+    )
+        thead 
+            tr
+                th Tinh nang 
+                th(class="text-center") Quan tri vien 
+                th(class="text-center") Quan tri noi dung 
+        tbody 
+            tr(data-name="id" class=" d-none")
+                td
+                each item in records 
+                    td(class="text-center")
+                        input(type="text" value=item.id)
+            tr 
+                td(colspan="4")
+                    b Danh muc san pham 
+            tr(data-name="product-category_view")
+                td Xem 
+                each item in records 
+                    td(class="text-center") 
+                        input(type="checkbox")
+            tr(data-name="product-category_create")
+                td Them moi 
+                each item in records 
+                    td(class="text-center") 
+                        input(type="checkbox")
+            tr(data-name="product-category_edit")
+                td Chinh sua
+                each item in records 
+                    td(class="text-center") 
+                        input(type="checkbox")
+            tr(data-name="product-category_deleted")
+                td Xoa
+                each item in records 
+                    td(class="text-center") 
+                        input(type="checkbox")
+    form(
+        id="form-change-permissions"
+        method="POST"
+        action=`${prefixAdmin}/roles/permissions?_method=PATCH`
+    )
+        div(class="form-group")
+            input(
+                type="text"
+                class="form-control d-none"
+                name="permissions"
+            )
+                        
+    script(src="/admin/js/role.js") 

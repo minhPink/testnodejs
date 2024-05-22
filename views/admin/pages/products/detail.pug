@@ -32,11 +32,14 @@ block main
         div(class="mb-4") Vi tri : <b>#{product.position}</b>
 
     if (product.description)
-        div(class="mb-4") #{product.description}
+        div.mb-4!= product.description
+
 
     a(  
         href=`${prefixAdmin}/products/edit/${product.id}`
         class="btn btn-danger btn-sm"
         type='button'
     ) Sửa
+
+    script(src="/admin/js/tinymce-config.js") 
     script(src="/admin/js/products.js")
