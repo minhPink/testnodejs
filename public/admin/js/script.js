@@ -27,7 +27,6 @@ if(formSearch){
         let url = new URL(window.location.href);
         e.preventDefault();
         const keyword = e.target.elements.keyword.value;
-        console.log(keyword);
     
         if(formSearch){
             url.searchParams.set("keyword", keyword);
