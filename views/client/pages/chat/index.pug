@@ -1,0 +1,85 @@
+extends ../../layouts/default.pug 
+include ../../mixins/box-head.pug 
+
+block main 
+    .container.my-3 
+        .row 
+            .col-12 
+                +box-head("Chat")
+
+        
+        //- .row 
+            //- .chat 
+            //-     .inner-body 
+            //-         .inner-incoming 
+            //-             .inner-name Em yeu
+            //-             .inner-content 
+            //-                 | A o sang nha em , nha e ko co ai 
+            //-             .inner-outgoing 
+            //-                 .inner-content 
+            //-                     | The a ? OK e 
+            //-             .inner-incoming 
+            //-                 .inner-name Em yeu 
+            //-                 .inner-content 
+            //-                     | Nhanh nha 
+            //-             .inner-outgoing 
+            //-                 .inner-content 
+            //-                     | Ck den roi ma thay ai o nha dau ? Khoa cua ma 
+            //-             .inner-incoming 
+            //-                 .inner-name Em Yeu 
+            //-                 .inner-content 
+            //-                     | Thi em ba nha ko co ai ma anh 
+            //-         .inner-foot     
+            //-             form(
+            //-                 class="inner-form"
+            //-                 action=""
+            //-             )
+            //-                 input(
+            //-                     type="text"
+            //-                     placeholder="Nhập nội dung"
+            //-                     name="content"
+            //-                 )
+            //-                 button 
+            //-                     i.fa-solid.fa-paper-plane
+        .chatbot 
+            header 
+                h2 ChatBot 
+            ul(
+                class="chatbox"
+                my-id=user.id
+            )
+                each chat of chats 
+                    if(user.id != chat.user_id)
+                        li(class="chat incoming")
+                            span
+                                i(class="fa-solid fa-person")
+                            div(class="inner-content")
+                                b #{chat.infoUser.fullName}
+                                p #{chat.content} 
+                    else
+                        li(class="chat outgoing")
+                            p #{chat.content}
+                    //- li(class="chat outgoing")
+                    //-     p FGKHFKHKFHKFHK 
+                //- li(class="chat incoming")
+                //-     span
+                //-         i(class="fa-solid fa-person")
+                //-     div(class="inner-content")
+                //-         b Em Yeu
+                //-         p Hi there asdasdasfas How can i sa
+                //- li(class="chat outgoing")
+                //-     p FGKHFKHKFHKFHK 
+            .chat-input 
+                form(
+                    action=""
+                    class="inner-form"
+                )
+                    input(
+                        placeholder="Nhập nội dung ..." 
+                        type="text"
+                        name="content"
+                        required
+                    )
+                    button
+                        i(class="fa-regular fa-paper-plane")  
+

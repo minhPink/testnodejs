@@ -38,6 +38,8 @@ header.header
                         li 
                             a(href="/cart") Gio hang (#{miniCart.totalQuantity ? miniCart.totalQuantity : "0"})
                         if(user)
+                            li
+                                a(href="/chat") Tro chuyen 
                             li 
                                 a(href="/user/info")  #{user.fullName}
                             li 

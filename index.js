@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const database = require("./config/database");
+const http = require('http');
+const { Server } = require("socket.io");
 
 require('dotenv').config();
 
@@ -28,6 +30,13 @@ app.use(express.static(`${__dirname}/public`));
 // App Locals Variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 app.locals.moment = moment;
+
+// socket.io
+const server = http.createServer(app);
+const io = new Server(server);
+global._io = io;
+
+
 
 // Flash
 app.use(cookieParser('HHSDHSDHHSH'));
@@ -53,6 +62,6 @@ app.get("*", (req, res) => {
     });
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

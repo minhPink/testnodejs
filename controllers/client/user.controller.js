@@ -87,7 +87,7 @@ module.exports.postLogin = async (req, res) => {
 module.exports.logout = async (req,res) => {
     res.clearCookie("tokenUser");
 
-    res.redirect("back");
+    res.redirect("/");
 }
 
 //[GET] /user/password/forgot
