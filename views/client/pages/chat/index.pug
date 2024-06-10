@@ -7,6 +7,7 @@ block main
             .col-12 
                 +box-head("Chat")
 
+
         
         //- .row 
             //- .chat 
@@ -40,8 +41,10 @@ block main
             //-                     name="content"
             //-                 )
             //-                 button 
-            //-                     i.fa-solid.fa-paper-plane
-        .chatbot 
+            //-    
+                             i.fa-solid.fa-paper-plane
+        
+        .chatbot
             header 
                 h2 ChatBot 
             ul(
@@ -49,26 +52,31 @@ block main
                 my-id=user.id
             )
                 each chat of chats 
+                    
                     if(user.id != chat.user_id)
                         li(class="chat incoming")
-                            span
-                                i(class="fa-solid fa-person")
-                            div(class="inner-content")
+                            div(class="inner-name")
                                 b #{chat.infoUser.fullName}
-                                p #{chat.content} 
+                            if(chat.content)
+                                div(class="inner-content")
+                                    p #{chat.content}
+                            if(chat.images.length > 0)
+                                div(class="inner-images")
+                                    each image in chat.images 
+                                        img(src=image)
                     else
                         li(class="chat outgoing")
-                            p #{chat.content}
-                    //- li(class="chat outgoing")
-                    //-     p FGKHFKHKFHKFHK 
-                //- li(class="chat incoming")
-                //-     span
-                //-         i(class="fa-solid fa-person")
-                //-     div(class="inner-content")
-                //-         b Em Yeu
-                //-         p Hi there asdasdasfas How can i sa
-                //- li(class="chat outgoing")
-                //-     p FGKHFKHKFHKFHK 
+                            if(chat.content != "")
+                                div(class="inner-content")
+                                    p #{chat.content}
+                            if(chat.images.length > 0)
+                                div(class="inner-images")
+                                    each image in chat.images 
+                                        img(src=image)
+                li(class="chat typing")
+            .upload-image 
+                div(class="custom-file-container" data-upload-id="upload-img")
+
             .chat-input 
                 form(
                     action=""
@@ -78,8 +86,17 @@ block main
                         placeholder="Nhập nội dung ..." 
                         type="text"
                         name="content"
-                        required
                     )
+
+                    label(
+                        for="file-upload-with-preview-upload-img"
+                    ) <i class="fa-solid fa-image"></i>
+                    
+                    .button-emo
+                        <i class="fa-solid fa-icons"></i>
                     button
-                        i(class="fa-regular fa-paper-plane")  
+                        i(class="fa-regular fa-paper-plane")
+    div(class="tooltip" role="tooltip")
+        emoji-picker
+    
 
