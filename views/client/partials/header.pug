@@ -39,7 +39,9 @@ header.header
                             a(href="/cart") Gio hang (#{miniCart.totalQuantity ? miniCart.totalQuantity : "0"})
                         if(user)
                             li
-                                a(href="/chat") Tro chuyen 
+                                a(href="/users/friends") Ban be
+                            li 
+                                a(href="/rooms-chat") Phong chat
                             li 
                                 a(href="/user/info")  #{user.fullName}
                             li 

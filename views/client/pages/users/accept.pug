@@ -9,9 +9,9 @@ block main
             .col-12 
                 +box-head("Loi moi ket ban")
 
-        .row 
+        .row(data-users-accept=user.id)
             each user in users
-                .col-3 
+                .col-3(user-id=user.id)
                     div(class="box-user")
                         div(class="inner-avatar")
                             img(

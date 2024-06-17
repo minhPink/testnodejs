@@ -11,15 +11,21 @@ module.exports.notFriends = async (req, res ) => {
 
     const acceptFriends = res.locals.user.acceptFriends;
 
+    const friendList = res.locals.user.friendList;
+
+    const friendListId = friendList.map(item => item.user_id);
+
     const users = await Users.find({
         $and: [
             { _id: { $ne : userId } },
             { _id: { $nin: requestFriends } },
             { _id: { $nin: acceptFriends } },
+            { _id: { $nin: friendListId } },
         ],
         status: "active",
         deleted: false
     }).select("avatar fullName");
+
 
 
     res.render("client/pages/users/not-friends", {
@@ -68,4 +74,32 @@ module.exports.accept = async (req, res) => {
         pageTitle: "Loi moi ket ban",
         users: users
     })
+}
+
+// [GET] /users/friends
+module.exports.friends = async (req, res) => {
+    // socketUser
+    userSocket(res);
+    //socketUser
+    const userId = res.locals.user.id;
+
+    const friendList = res.locals.user.friendList;
+
+    const friendListId = friendList.map(item => item.user_id);
+
+    const users = await Users.find({
+        _id: { $in : friendListId },
+        status: "active",
+        deleted: false,
+    }).select("avatar fullName statusOnline");
+
+    users.forEach(user => {
+        const infoUser = friendList.find(item => item.user_id == user.id);
+        user.roomChatId = infoUser.room_chat_id;
+    });
+
+    res.render("client/pages/users/friends", {
+        pageTitle: "Danh sach ket ban",
+        users: users
+    });
 }

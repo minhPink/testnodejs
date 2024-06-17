@@ -6,6 +6,8 @@ const Cart = require("../../models/cart.model");
 const generateHelper = require("../../helpers/generate");
 
 const sendMailHelper = require("../../helpers/sendMail");
+
+const statusSocket = require("../../sockets/client/status.socket");
 //[GET] /user/register
 module.exports.register = async (req, res) => {
     res.render("client/pages/user/register", {
@@ -71,6 +73,12 @@ module.exports.postLogin = async (req, res) => {
     }
 
     res.cookie("tokenUser", user.tokenUser);
+    // Cap nhat trang thai online
+    await User.updateOne({
+        _id: user.id,
+    },{
+        statusOnline: "online"
+    })
     //Luu user_id vao collections cart
     await Cart.updateOne(
         {
@@ -81,13 +89,28 @@ module.exports.postLogin = async (req, res) => {
         }
     )
     res.redirect(`/`);
+
+    //socket
+    statusSocket.userOnline(user.id);
+    //socket
 };
 
 //[GET] /user/logout
-module.exports.logout = async (req,res) => {
+module.exports.logout = async (req, res) => {
+    // Cap nhat trang thai offline
+    await User.updateOne({
+        _id: res.locals.user.id,
+    },{
+        statusOnline: "offline"
+    })
+
     res.clearCookie("tokenUser");
 
     res.redirect("/");
+
+    //socket
+    statusSocket.userOffline(res.locals.user.id);
+    //socket
 }
 
 //[GET] /user/password/forgot

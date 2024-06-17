@@ -1,4 +1,4 @@
-
+const RoomChat = require("../../models/room-chat.model");
 const Users = require("../../models/users.model");
 
 module.exports = async (res) => {
@@ -42,6 +42,16 @@ module.exports = async (res) => {
             socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIENDS", {
                 userId: userId,
                 lengthAcceptFriends: lengthAcceptFriends
+            });
+
+            // Lay thong tin cua ong A tra ve cho ong B
+            const infoUserA = await Users.findOne({
+                _id:myUserId
+            }).select("avatar fullName");
+
+            socket.broadcast.emit("SERVER_RETURN_INFOR_ACCEPT_FRIEND", {
+                userId: userId,
+                infoUserA: infoUserA
             })
         });
 
@@ -83,6 +93,12 @@ module.exports = async (res) => {
             socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIENDS", {
                 userId: userId,
                 lengthAcceptFriends: lengthAcceptFriends
+            });
+
+            // Lay thong tin cua ong A tra ve cho ong B
+            socket.broadcast.emit("SERVER_RETURN_USER_ID_CANCEL_FRIEND", {
+                userId: userId,
+                userIdA: myUserId
             })
         });
 
@@ -125,7 +141,31 @@ module.exports = async (res) => {
                 _id: myUserId,
                 acceptFriends: userId
             })
-            //
+
+            const exitsUserA = await Users.findOne({
+                _id: userId,
+                requestFriends: myUserId
+            });
+
+            // Tao phong chat
+            let roomChat;
+            if(exitsUserA && exitsUserB) {
+                roomChat = new RoomChat({
+                    type: "friend",
+                    users: [
+                        {
+                            user_id: userId,
+                            role: "superAdmin"
+                        },
+                        {
+                            user_id: myUserId,
+                            roomChat: "superAdmin"
+                        }
+                    ]
+                })
+            };
+            await roomChat.save();
+
             if(exitsUserB) {
                 await Users.updateOne({
                     _id: myUserId
@@ -133,7 +173,7 @@ module.exports = async (res) => {
                     $push: {
                         friendList: {
                             user_id: userId,
-                            room_chat_id: "",
+                            room_chat_id: roomChat.id,
                         }
                     },
                     $pull: { acceptFriends: userId }
@@ -141,10 +181,6 @@ module.exports = async (res) => {
             };
             // Them {user_id, room_chat_id} cua B vao friendList cua A
             // xoa id cua ong B vao requestFriends ong A
-            const exitsUserA = await Users.findOne({
-                _id: userId,
-                requestFriends: myUserId
-            })
             if(exitsUserA) {
                 await Users.updateOne({
                     _id: userId
@@ -152,7 +188,7 @@ module.exports = async (res) => {
                     $push: {
                         friendList: {
                             user_id: myUserId,
-                            room_chat_id: "",
+                            room_chat_id: roomChat.id,
                         }
                     },
                     $pull: { requestFriends: myUserId }

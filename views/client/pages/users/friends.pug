@@ -7,9 +7,9 @@ block main
         include ../../partials/list-button-user.pug
         .row 
             .col-12 
-                +box-head("Danh sach nguoi dung")
+                +box-head("Danh sach ket ban")
 
-        .row(data-users-not-friend=user.id)
+        .row(data-user-friend)
             each user in users
                 .col-3(user-id=user.id)
                     div(class="box-user")
@@ -21,14 +21,14 @@ block main
                         div(class="inner-info")
                             div(class="inner-name") #{user.fullName}
                             div(class="inner-buttons")
-                                button(
-                                    class="btn btn-sm btn-primary mr-1"
-                                    btn-add-friend=user.id
-                                ) Kết bạn
-                                button(
-                                    class="btn btn-sm btn-secondary mr-1"
-                                    btn-cancel-friend=user.id
-                                ) Hủy
+                                a(
+                                    href=`/chat/${user.roomChatId}`
+                                    class="btn btn-primary mr-1"
+                                ) Nhắn tin
+                        div(
+                            class="inner-status"
+                            status=user.statusOnline
+                        ) <i class="fa-solid fa-circle"></i>
     block script 
         script(type="module" src="/js/users.js") 
                         
